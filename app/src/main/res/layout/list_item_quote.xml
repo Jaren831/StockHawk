@@ -6,7 +6,10 @@
     android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingLeft="16dp"
-    android:paddingRight="16dp">
+    android:paddingRight="16dp"
+    android:background="@color/colorPrimaryDark"
+    android:elevation="20dp"
+    android:layout_margin="2dp">
 
     <TextView
         android:id="@+id/symbol"

@@ -21,6 +21,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.GraphActivity"
+            android:parentActivityName=".ui.MainActivity">
+            <meta-data
+                android:name="android.support.sPARENT_ACTIVITY"
+                android:value=".ui.MainActivity"/>
+            <intent-filter>
+                <action android:name="android.intent.action.GraphActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".sync.QuoteIntentService"
@@ -37,5 +48,4 @@
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
     </application>
-
 </manifest>
