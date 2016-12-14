@@ -104,6 +104,8 @@ public final class QuoteSyncJob {
 
                     quoteCVs.add(quoteCV);
 
+                } else {
+                    return;
                 }
 
 

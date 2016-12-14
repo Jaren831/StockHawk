@@ -29,7 +29,6 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
     private final DecimalFormat percentageFormat;
     private Cursor cursor;
     private StockAdapterOnClickHandler clickHandler;
-    private Intent graphIntent;
 
     StockAdapter(Context context, StockAdapterOnClickHandler clickHandler) {
         this.context = context;
@@ -132,9 +131,11 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
             cursor.moveToPosition(adapterPosition);
             int symbolColumn = cursor.getColumnIndex(Contract.Quote.COLUMN_SYMBOL);
             clickHandler.onClick(cursor.getString(symbolColumn));
-            graphIntent = new Intent(context, GraphActivity.class);
-            graphIntent.putExtra("id", Integer.toString(getPosition()));
-//            Toast.makeText(context,"The Item Clicked is: " + getPosition(),Toast.LENGTH_SHORT).show();
+            String currentHistory = cursor.getString(Contract.Quote.POSITION_HISTORY);
+            Intent graphIntent = new Intent(context, GraphActivity.class);
+            graphIntent.putExtra("history", currentHistory);
+            System.out.print(currentHistory);
+//            Toast.makeText(context, currentHistory,Toast.LENGTH_LONG).show();
             context.startActivity(graphIntent);
 
 
