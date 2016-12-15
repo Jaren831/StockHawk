@@ -48,12 +48,15 @@
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE" />
-        <receiver android:name="AppWidgetProvider" >
+        <receiver
+            android:name=".data.StockWidgetProvider"
+            android:label="@string/title_widget_stock">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.udacity.stockhawk.ACTION_DATA_UPDATED"/>
             </intent-filter>
             <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/appwidget_info" />
+                android:resource="@xml/stock_widget_info" />
         </receiver>
     </application>
 </manifest>
