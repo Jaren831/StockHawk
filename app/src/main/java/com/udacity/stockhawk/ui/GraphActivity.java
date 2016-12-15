@@ -1,7 +1,5 @@
 package com.udacity.stockhawk.ui;
 
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
@@ -13,8 +11,8 @@ import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.google.common.collect.Lists;
 import com.udacity.stockhawk.R;
-import com.udacity.stockhawk.data.DbHelper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -22,14 +20,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class GraphActivity extends AppCompatActivity {
 
     LineChart chart;
-    DbHelper dbHelper;
-    SQLiteDatabase db;
-    Cursor cursor;
-    TextView historyText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +36,12 @@ public class GraphActivity extends AppCompatActivity {
 
         TextView stock_name = (TextView) findViewById(R.id.stock_graph_name);
         stock_name.setText(symbol);
-        List<String> historyListByInterval = Arrays.asList(history.split("\n"));
+        List<String> historyListByInterval = Lists.reverse(Arrays.asList(history.split("\n")));
         List<Entry> entries = new ArrayList<>();
         int y = 1;
         for (String x : historyListByInterval) {
             String[] values = x.split(",");
-            entries.add(new Entry((float) y, Float.valueOf(values[1])));
+            entries.add(new Entry((float) y, Float.valueOf(values[1].trim())));
             y++;
         }
 
@@ -54,10 +49,10 @@ public class GraphActivity extends AppCompatActivity {
         String beginningDate = historyListByInterval.get(historyListByInterval.size() - 1).split(",")[0];
         Date end = new Date(Long.parseLong(endDate));
         Date begin = new Date(Long.parseLong(beginningDate));
-        DateFormat df = new SimpleDateFormat("dd:MM:yyyy");
+        DateFormat df = new SimpleDateFormat("dd:MM:yyyy", Locale.getDefault());
 
 
-        LineDataSet dataSet = new LineDataSet(entries, "$");
+        LineDataSet dataSet = new LineDataSet(entries, getString(R.string.currency_symbol));
         dataSet.setColor(getColor(R.color.colorAccent));
         dataSet.setValueTextColor(getColor(R.color.colorAccent));
 
@@ -67,7 +62,9 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
         xAxis.setEnabled(false);
         Description description = new Description();
-        description.setText(df.format(begin) + " - " + df.format(end));
+        String historyDates = df.format(begin) + " - " + df.format(end);
+        description.setText(historyDates);
+        chart.setContentDescription(symbol + " " + getString(R.string.chart_content_description) + " " + historyDates);
 
         Legend legend = chart.getLegend();
         legend.setEnabled(true);
@@ -77,13 +74,6 @@ public class GraphActivity extends AppCompatActivity {
         chart.setDescription(description);
         chart.setBackgroundColor(getColor(R.color.colorPrimary));
         chart.invalidate();
-
-
-
-        System.out.print(entries);
-////        Toast.makeText(this,"The Item Clicked is: " + stock,Toast.LENGTH_SHORT).show();
-//        historyText = (TextView) findViewById(R.id.history_text);
-//        historyText.setText(historySplit);
     }
 
 }

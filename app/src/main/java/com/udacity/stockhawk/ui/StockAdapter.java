@@ -34,9 +34,9 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
         this.context = context;
         this.clickHandler = clickHandler;
 
-        dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
-        dollarFormatWithPlus = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.US);
-        dollarFormatWithPlus.setPositivePrefix("+$");
+        dollarFormat = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
+        dollarFormatWithPlus = (DecimalFormat) NumberFormat.getCurrencyInstance(Locale.getDefault());
+        dollarFormatWithPlus.setPositivePrefix("+" + context.getString(R.string.currency_symbol));
         percentageFormat = (DecimalFormat) NumberFormat.getPercentInstance(Locale.getDefault());
         percentageFormat.setMaximumFractionDigits(2);
         percentageFormat.setMinimumFractionDigits(2);
@@ -140,12 +140,8 @@ class StockAdapter extends RecyclerView.Adapter<StockAdapter.StockViewHolder> {
             graphIntent.putExtra("history", currentHistory);
             graphIntent.putExtra("symbol", currentSymbolText);
             System.out.print(currentHistory);
-//            Toast.makeText(context, currentHistory,Toast.LENGTH_LONG).show();
+            v.setContentDescription(currentSymbolText + " " + context.getString(R.string.list_selection_description));
             context.startActivity(graphIntent);
-
-
         }
-
-
     }
 }
