@@ -1,4 +1,4 @@
-package com.udacity.stockhawk.data;
+package com.udacity.stockhawk.Widget;
 
 /**
  * Created by jaren on 12/14/2016.
