@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/percent_change_pill_green"
             android:paddingStart="3dp"
-            android:paddingEnd="3dp"/>
+            android:paddingEnd="3dp"
+            android:layout_marginEnd="3dp"/>
         <TextView
             android:id="@+id/widget_percent_change"
             style="@style/PercentChangeTextStyle"

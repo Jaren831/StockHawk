@@ -1,6 +1,7 @@
 package com.udacity.stockhawk.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -27,6 +28,8 @@ import com.udacity.stockhawk.sync.QuoteSyncJob;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
+
+import static com.udacity.stockhawk.sync.QuoteSyncJob.ACTION_DATA_UPDATED;
 
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>,
         SwipeRefreshLayout.OnRefreshListener,
@@ -140,6 +143,8 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         if (data.getCount() != 0) {
             error.setVisibility(View.GONE);
+            Intent dataUpdatedIntent = new Intent(ACTION_DATA_UPDATED);
+            this.sendBroadcast(dataUpdatedIntent);
         }
         adapter.setCursor(data);
     }

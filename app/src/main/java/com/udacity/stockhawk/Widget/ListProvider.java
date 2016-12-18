@@ -13,7 +13,6 @@ import com.udacity.stockhawk.data.Contract;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.Locale;
 
 /**
@@ -21,7 +20,6 @@ import java.util.Locale;
  */
 
 public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
-    private final ArrayList<ListItem> listItemList = new ArrayList<>();
     private final DecimalFormat dollarFormatWithPlus;
     private final DecimalFormat dollarFormat;
     private final DecimalFormat percentageFormat;
@@ -49,8 +47,6 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
         percentageFormat.setMaximumFractionDigits(2);
         percentageFormat.setMinimumFractionDigits(2);
         percentageFormat.setPositivePrefix("+");
-
-        populateListItem();
     }
 
     void setCursor(Cursor cursor) {
@@ -77,18 +73,6 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
         return percentageFormat.format(rawPercentageChange / 100);
     }
 
-    private void populateListItem() {
-        for (int i = 0; i < getCount(); i++) {
-            String symbol = getSymbolAtPosition(i);
-            ListItem listItem = new ListItem();
-            listItem.symbol = symbol;
-            listItem.price = getPriceAtPosition(i);
-            listItem.absoluteChange = getRawAbsoluteChangeAtPosition(i);
-            listItem.percentChange = getPercentageChangeAtPosition(i);
-            listItemList.add(listItem);
-        }
-    }
-
     @Override
     public int getCount() {
         int count = 0;
@@ -107,13 +91,12 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         final RemoteViews remoteView = new RemoteViews(
                 context.getPackageName(), R.layout.stock_widget_item);
-        ListItem listItem = listItemList.get(position);
-        remoteView.setTextViewText(R.id.widget_symbol, listItem.symbol);
-        remoteView.setTextViewText(R.id.widget_price, listItem.price);
-        remoteView.setTextViewText(R.id.widget_absolute_change, listItem.absoluteChange);
-        remoteView.setTextViewText(R.id.widget_percent_change, listItem.percentChange);
+        remoteView.setTextViewText(R.id.widget_symbol, getSymbolAtPosition(position));
+        remoteView.setTextViewText(R.id.widget_price, getPriceAtPosition(position));
+        remoteView.setTextViewText(R.id.widget_absolute_change, getRawAbsoluteChangeAtPosition(position));
+        remoteView.setTextViewText(R.id.widget_percent_change, getPercentageChangeAtPosition(position));
 
-        if (Float.parseFloat(listItem.absoluteChange) > 0) {
+        if (cursor.getFloat(Contract.Quote.POSITION_ABSOLUTE_CHANGE) > 0) {
             remoteView.setInt(R.id.widget_absolute_change, "setBackgroundResource", R.drawable.percent_change_pill_green);
             remoteView.setInt(R.id.widget_percent_change, "setBackgroundResource", R.drawable.percent_change_pill_green);
         } else {
