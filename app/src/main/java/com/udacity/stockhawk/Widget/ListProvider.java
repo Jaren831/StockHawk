@@ -1,7 +1,6 @@
 package com.udacity.stockhawk.Widget;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,7 +10,6 @@ import android.widget.RemoteViewsService;
 
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
-import com.udacity.stockhawk.data.StockProvider;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -144,7 +142,7 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
-        ContentProvider contentProvider = new StockProvider();
+//        ContentProvider contentProvider = new StockProvider();
         Uri stockUri = Contract.Quote.URI;
         cursor = context.getContentResolver().query(stockUri,
                 STOCK_COLUMNS,
