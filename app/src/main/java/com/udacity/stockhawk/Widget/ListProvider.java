@@ -19,7 +19,7 @@ import java.util.Locale;
  * Created by Jaren Lynch on 12/17/2016.
  */
 
-class ListProvider implements RemoteViewsService.RemoteViewsFactory {
+public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     private final ArrayList<ListItem> listItemList = new ArrayList<>();
     private final DecimalFormat dollarFormatWithPlus;
     private final DecimalFormat dollarFormat;

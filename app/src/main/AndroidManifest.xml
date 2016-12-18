@@ -15,6 +15,35 @@
         android:theme="@style/AppTheme"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
+
+        <provider
+            android:name=".data.StockProvider"
+            android:authorities="com.udacity.stockhawk"
+            android:exported="false" />
+
+        <service
+            android:name=".sync.QuoteJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".sync.QuoteIntentService"
+            android:exported="false" />
+        <service
+            android:name=".Widget.StockWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
+        <receiver
+            android:name=".Widget.StockWidgetProvider"
+            android:label="@string/title_widget_stock">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.udacity.stockhawk.ACTION_DATA_UPDATED"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/stock_widget_info" />
+        </receiver>
+
         <activity android:name=".ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -33,30 +62,5 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <service
-            android:name=".sync.QuoteIntentService"
-            android:exported="false" />
-
-        <provider
-            android:name=".data.StockProvider"
-            android:authorities="com.udacity.stockhawk"
-            android:exported="false" />
-
-        <service
-            android:name=".sync.QuoteJobService"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE" />
-        <receiver
-            android:name=".Widget.StockWidgetProvider"
-            android:label="@string/title_widget_stock">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.udacity.stockhawk.ACTION_DATA_UPDATED"/>
-            </intent-filter>
-            <meta-data android:name="android.appwidget.provider"
-                android:resource="@xml/stock_widget_info" />
-        </receiver>
     </application>
 </manifest>
