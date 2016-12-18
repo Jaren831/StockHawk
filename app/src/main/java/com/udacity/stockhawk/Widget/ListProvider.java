@@ -1,14 +1,17 @@
 package com.udacity.stockhawk.Widget;
 
 import android.appwidget.AppWidgetManager;
+import android.content.ContentProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.udacity.stockhawk.R;
 import com.udacity.stockhawk.data.Contract;
+import com.udacity.stockhawk.data.StockProvider;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -26,6 +29,13 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     private final DecimalFormat percentageFormat;
     private Context context = null;
     private Cursor cursor;
+    private static final String[] STOCK_COLUMNS = {
+            Contract.Quote.TABLE_NAME + "." + Contract.Quote._ID,
+            Contract.Quote.COLUMN_SYMBOL,
+            Contract.Quote.COLUMN_PRICE,
+            Contract.Quote.COLUMN_ABSOLUTE_CHANGE,
+            Contract.Quote.COLUMN_PERCENTAGE_CHANGE
+    };
 
 
     public ListProvider(Context context, Intent intent) {
@@ -42,10 +52,6 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
         percentageFormat.setPositivePrefix("+");
 
         populateListItem();
-    }
-
-    void setCursor(Cursor cursor) {
-        this.cursor = cursor;
     }
 
     private String getSymbolAtPosition(int position) {
@@ -133,6 +139,13 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onCreate() {
+        ContentProvider contentProvider = new StockProvider();
+        Uri stockUri = Contract.Quote.URI;
+        cursor = contentProvider.query(stockUri,
+                STOCK_COLUMNS,
+                null,
+                null,
+                null);
     }
 
     @Override
