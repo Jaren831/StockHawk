@@ -34,7 +34,8 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
             Contract.Quote.COLUMN_SYMBOL,
             Contract.Quote.COLUMN_PRICE,
             Contract.Quote.COLUMN_ABSOLUTE_CHANGE,
-            Contract.Quote.COLUMN_PERCENTAGE_CHANGE
+            Contract.Quote.COLUMN_PERCENTAGE_CHANGE,
+            Contract.Quote.COLUMN_HISTORY
     };
 
 
@@ -52,6 +53,10 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
         percentageFormat.setPositivePrefix("+");
 
         populateListItem();
+    }
+
+    void setCursor(Cursor cursor) {
+        this.cursor = cursor;
     }
 
     private String getSymbolAtPosition(int position) {
@@ -141,11 +146,12 @@ public  class ListProvider implements RemoteViewsService.RemoteViewsFactory {
     public void onCreate() {
         ContentProvider contentProvider = new StockProvider();
         Uri stockUri = Contract.Quote.URI;
-        cursor = contentProvider.query(stockUri,
+        cursor = context.getContentResolver().query(stockUri,
                 STOCK_COLUMNS,
                 null,
                 null,
                 null);
+        setCursor(cursor);
     }
 
     @Override
